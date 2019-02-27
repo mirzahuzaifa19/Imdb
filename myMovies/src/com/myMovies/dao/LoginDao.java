@@ -22,17 +22,24 @@ public class LoginDao {
 	public boolean isUser(LoginDetailsPojo login) throws SQLException {
 		
 			Connection conn = DbConnection.getConnection();
-				String query="select * from Login where username=? password=?";
+				String query="select * from Login ";
 				PreparedStatement ps= conn.prepareStatement(query);
   		        ps.setString(1, login.getUserName());
 		         ps.setString(2, login.getPassword());
 	            ResultSet results = ps.executeQuery(query);
+	           
 	            while (results.next()) {
-	               return true;
+	            String userName = results.getString("userName");
+	            String password =  results.getString("password");
+
+	               if ((login.getUserName().equals(userName)) && (login.getPassword().equals(password))) {
+	                   return true;
 	               }
-				return false;
 	}
-//	public static void main(String[] args) throws SQLException {
-//		System.out.println(new LoginDao().isUser(new LoginDetailsPojo("mirza","okey")));
-//	}
+				return false;
+
+	}
+	public static void main(String[] args) throws SQLException {
+		System.out.println(new LoginDao().isUser(new LoginDetailsPojo("mirza","okey")));
+	}
 }
